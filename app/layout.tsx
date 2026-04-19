@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'})
@@ -28,10 +28,14 @@ export default function RootLayout({
         <ThemeProvider>
           <SidebarProvider>
             <AppSidebar />
-            <main>
-              <SidebarTrigger />
-              {children}
-            </main>
+            <SidebarInset>
+              <div className="flex items-center gap-2 px-4 py-3 lg:px-6">
+                <SidebarTrigger />
+              </div>
+              <main className="flex-1">
+                {children}
+              </main>
+            </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>
       </body>
