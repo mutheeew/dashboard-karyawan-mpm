@@ -1,3 +1,4 @@
+import Bonus from "@/components/dashboard/bonus";
 import { Count } from "@/components/dashboard/count";
 import { DepartmentChart } from "@/components/dashboard/department";
 import { Gender } from "@/components/dashboard/gender";
@@ -5,6 +6,7 @@ import { MaritalChart } from "@/components/dashboard/marital";
 import { Salary } from "@/components/dashboard/salary";
 import { Status } from "@/components/dashboard/status";
 import { getDataKaryawan } from "@/lib/api/data-karyawan";
+import getBonusRecipients from "@/lib/utils/dashboard/bonus";
 import { mapDepartmentData } from "@/lib/utils/dashboard/department";
 import { mapMaritalData } from "@/lib/utils/dashboard/marital";
 
@@ -24,6 +26,9 @@ export default async function Page() {
   const salaryMin = res.data.reduce((min, curr) => 
     curr.payroll.netSalary < min ? curr.payroll.netSalary : min
   , Infinity)
+
+  const bonus = getBonusRecipients(res.data)
+
  
   return (
     <div className="p-6">
@@ -36,8 +41,9 @@ export default async function Page() {
         <Gender male={maleCount} female={femaleCount} />
         <MaritalChart data={maritalData}/>
       </div>
-      <div className="mt-5">
+      <div className="flex gap-3 mt-5">
         <DepartmentChart data={departmentData} />
+        <Bonus data={bonus} />
       </div>
     </div>
   )
