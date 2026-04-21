@@ -1,6 +1,5 @@
 import { FileUser } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { Progress } from "../ui/progress"
 
 type Props = {
     permanent: number
@@ -8,6 +7,10 @@ type Props = {
 }
 
 export function Status({ permanent, contract }: Props) {
+    const total = permanent + contract
+    const permanentPercent = total > 0 ? (permanent / total) * 100 : 0
+    const contractPercent = total > 0 ? (contract / total) * 100 : 0
+
     return (
         <Card className="w-full">
             <CardHeader>
@@ -17,27 +20,24 @@ export function Status({ permanent, contract }: Props) {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="flex justify-between items-center">
-                    <span>Contract</span>
+                <div className="flex justify-between items-center mb-2">
                     <div>
-                        <span className="ml-auto">{contract}</span>
-                        <span className="text-muted-foreground">
-                            {`(${Math.round((contract / (permanent + contract)) * 100) || 0}%)`}
-                        </span>
+                        <span className="text-primary">Permanent: {permanent} ({Math.round(permanentPercent)}%)</span>
+                    </div>
+                    <div>
+                        <span className="text-secondary">Contract: {contract} ({Math.round(contractPercent)}%)</span>
                     </div>
                 </div>
-                <Progress value={permanent} id="permanent" className="w-full h-5"/>
-
-                <div className="flex justify-between items-center mt-5">
-                    <span>Permanent</span>
-                    <div>
-                        <span className="ml-auto">{permanent}</span>
-                        <span className="text-muted-foreground">
-                            {`(${Math.round((permanent / (permanent + contract)) * 100) || 0}%)`}
-                        </span>
-                    </div>
+                <div className="w-full h-5 bg-muted rounded-full relative overflow-hidden">
+                    <div
+                        className="bg-primary h-full absolute left-0 top-0 transition-all duration-300"
+                        style={{ width: `${permanentPercent}%` }}
+                    ></div>
+                    <div
+                        className="bg-secondary h-full absolute top-0 transition-all duration-300"
+                        style={{ left: `${permanentPercent}%`, width: `${contractPercent}%` }}
+                    ></div>
                 </div>
-                <Progress value={permanent} id="permanent" className="w-full h-5"/>
             </CardContent>
         </Card>
     )

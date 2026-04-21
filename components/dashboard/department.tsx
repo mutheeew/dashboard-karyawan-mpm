@@ -72,7 +72,7 @@ export function DepartmentChart({
   }
 
   return (
-    <Card className="flex flex-col w-full">
+    <Card className="flex flex-col w-full overflow-visible">
       <CardHeader className="items-center pb-0">
         <CardTitle>Distribusi Departement</CardTitle>
         <CardDescription>{getDescription()}</CardDescription>
@@ -80,7 +80,7 @@ export function DepartmentChart({
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-62"
+          className="mx-auto w-full h-64"
         >
           <PieChart>
             <ChartTooltip

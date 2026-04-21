@@ -1,10 +1,10 @@
 "use client"
 import * as React from "react"
-import { Label, Pie, PieChart } from "recharts"
+import { Pie, PieChart } from "recharts"
 import {
   Card,
   CardContent,
-  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -15,21 +15,17 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import { MaritalData } from "@/lib/utils/dashboard/marital"
+import { Flower2 } from "lucide-react"
 
 type Props = {
   data: MaritalData[]
-  dateRange?: string 
+  dateRange?: string
 }
 
-export function MaritalChart({ 
-  data, 
-  dateRange,
-}: Props) {
+export function MaritalChart({ data, dateRange }: Props) {
   const chartConfig = React.useMemo(() => {
     const config: ChartConfig = {
-      total: {
-        label: "Total Karyawan",
-      },
+      total: { label: "Total Karyawan" },
     }
     data.forEach((item) => {
       config[item.maritalStatus] = {
@@ -44,74 +40,52 @@ export function MaritalChart({
     return data.reduce((acc, curr) => acc + curr.total, 0)
   }, [data])
 
-  const largestDept = React.useMemo(() => {
-    if (data.length === 0) return null
-    return data.reduce((max, curr) => 
-      curr.total > max.total ? curr : max
-    )
-  }, [data])
-
   return (
-    <Card className="flex flex-col w-full">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Status Perkawinan</CardTitle>
+    <Card className="flex flex-col w-full overflow-visible">
+      <CardHeader className="items-start px-4">
+        <CardTitle className="flex gap-1">
+          <Flower2 className="h-6 w-6" />
+          Status Perkawinan
+        </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="pt-0 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-62"
+          className="mx-auto w-full aspect-square"
+          style={{ marginBottom: "-20%", marginTop: "-15%", maxHeight: 180 }}
         >
           <PieChart>
             <ChartTooltip
               cursor={false}
-              content={
-                <ChartTooltipContent 
-                  hideLabel
-                //   hideIndicator={true}
-                  className="w-auto"
-                />
-              }
+              content={<ChartTooltipContent hideLabel />}
             />
             <Pie
               data={data}
               dataKey="total"
-              nameKey="department"
-              innerRadius={60}
-              strokeWidth={5}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
-                        >
-                          {totalKaryawan.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          Karyawan
-                        </tspan>
-                      </text>
-                    )
-                  }
-                }}
-              />
-            </Pie>
+              nameKey="maritalStatus"
+              innerRadius={50}
+              outerRadius={80}
+              strokeWidth={3}
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>
+      {/* <CardFooter className="flex justify-center gap-6 pt-0 pb-4">
+        {data.map((item) => (
+          <div key={item.maritalStatus} className="flex items-center gap-2">
+            <span
+              className="inline-block h-3 w-3 rounded-full"
+              style={{ backgroundColor: item.fill }}
+            />
+            <span className="text-sm text-muted-foreground">
+              {item.maritalStatus} —{" "}
+              <span className="font-medium text-foreground">
+                {item.total} ({totalKaryawan > 0 ? ((item.total / totalKaryawan) * 100).toFixed(1) : 0}%)
+              </span>
+            </span>
+          </div>
+        ))}
+      </CardFooter> */}
     </Card>
   )
 }

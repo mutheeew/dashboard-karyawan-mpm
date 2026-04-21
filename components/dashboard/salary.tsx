@@ -12,17 +12,17 @@ export function Salary({ salaryMax, salaryMin }: Props) {
             <CardHeader>
                 <CardTitle className="flex gap-1">
                     <Users className="h-6 w-6" />
-                    Gaji Maksimum dan Minimum (IDR)
+                    Max - Min Salary (IDR)
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <div>
-                    <span>Gaji Maksimum: </span>
-                    <span className="font-bold">{salaryMax.toLocaleString("id-ID")}</span>
+                    <p>Max Salary </p>
+                    <p className="font-bold text-xl bg-teal-600 text-teal-50 py-2 text-center rounded-xl">Rp {salaryMax.toLocaleString("id-ID")}</p>
                 </div>
-                <div>
-                    <span>Gaji Minimum: </span>
-                    <span className="font-bold">{salaryMin.toLocaleString("id-ID")}</span>
+                <div className="mt-5">
+                    <p>Min Salary </p>
+                    <p className="font-bold text-xl bg-orange-600 text-amber-50 py-2 text-center rounded-xl">Rp {salaryMin.toLocaleString("id-ID")}</p>
                 </div>
             </CardContent>
         </Card>
